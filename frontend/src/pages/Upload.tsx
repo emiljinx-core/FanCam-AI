@@ -208,14 +208,14 @@ export const Upload: React.FC = () => {
                 Drag and drop your group video here, or <span className="underline decoration-white/50 text-white">browse</span>
               </p>
               <p className="text-xs sm:text-sm text-white/50 mt-1 font-mono">
-                Supports MP4, MOV • Strictly under 100 MB
+                Supports MP4, MOV • No signup required
               </p>
             </div>
 
             {/* Constraint Pill */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-white/80">
               <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
-              <span>Strict 100 MB Limit — No signup required</span>
+              <span>Strict 100 MB Limit</span>
             </div>
           </div>
         </div>
