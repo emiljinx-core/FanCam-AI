@@ -1,0 +1,20 @@
+# Python / virtual environments
+edlvenv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+
+# Node
+node_modules/
+frontend/dist/
+
+# Runtime data and generated media
+backend/storage/
+backend/weights/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
