@@ -21,36 +21,44 @@ export const Upload: React.FC = () => {
     videoId?: string;
   } | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
 
-  // Pre-configured sample clips for frictionless testing
+  // Sample clips hosted in the project's public GitHub repository
+  const SAMPLE_BASE_URL = 'https://raw.githubusercontent.com/emiljinx-core/FanCam-AI/main/assets';
   const sampleClips = [
     {
       id: 'sample-dance',
-      title: 'Crowded Concert Group',
-      size: '18.4 MB',
-      duration: '0:14',
-      thumbnail: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=400&q=80',
-      peopleCount: 6
+      title: 'Dance Demo',
+      fileName: 'danceDemo.mp4',
+      githubRawUrl: `${SAMPLE_BASE_URL}/danceDemo.mp4`,
+      size: '22.7 MB',
+      duration: '0:24',
+      thumbnail: `${SAMPLE_BASE_URL}/danceDemo.jpg`,
+      peopleCount: 7
     },
     {
       id: 'sample-sports',
-      title: 'Soccer Pitch Crosses',
-      size: '34.2 MB',
-      duration: '0:22',
-      thumbnail: 'https://placehold.co/400x400',
-      peopleCount: 5
+      title: 'Street Demo',
+      fileName: 'streetDemo.mp4',
+      githubRawUrl: `${SAMPLE_BASE_URL}/streetDemo.mp4`,
+      size: '6.2 MB',
+      duration: '0:07',
+      thumbnail: `${SAMPLE_BASE_URL}/streetDemo.jpg`,
+      peopleCount: 16
     },
     {
       id: 'sample-party',
-      title: 'Rooftop Gathering',
-      size: '12.8 MB',
-      duration: '0:11',
-      thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80',
-      peopleCount: 4
+      title: 'Movie Demo',
+      fileName: 'movieDemo.mp4',
+      githubRawUrl: `${SAMPLE_BASE_URL}/movieDemo.mp4`,
+      size: '22.2 MB',
+      duration: '0:28',
+      thumbnail: `${SAMPLE_BASE_URL}/movieDemo.jpg`,
+      peopleCount: 1
     }
   ];
 
-  const handleValidateAndSetFile = (file: File) => {
+  const handleValidateAndSetFile = (file: File, displayName: string = file.name) => {
     // 100 MB check
     if (file.size > MAX_BYTES) {
       toast.error('Please upload a file with less than 100 MB.', {
@@ -70,13 +78,13 @@ export const Upload: React.FC = () => {
 
     const objectUrl = URL.createObjectURL(file);
     setSelectedFile({
-      name: file.name,
+      name: displayName,
       size: file.size,
       url: objectUrl,
       rawFile: file,
     });
 
-    toast.success(`Video verified: ${(file.size / (1024 * 1024)).toFixed(1)} MB (${file.name})`);
+    toast.success(`Video verified: ${(file.size / (1024 * 1024)).toFixed(1)} MB (${displayName})`);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -95,13 +103,25 @@ export const Upload: React.FC = () => {
     }
   };
 
-  const handleUseSample = (sample: typeof sampleClips[0]) => {
-    setSelectedFile({
-      name: `${sample.title}.mp4`,
-      size: 19 * 1024 * 1024,
-      url: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260808_064556_051587f1-74a1-4336-8c05-4dde3594ed05.mp4'
-    });
-    toast.info(`Loaded demo video: ${sample.title}`);
+  const handleUseSample = async (sample: typeof sampleClips[0]) => {
+    if (loadingSampleId) return;
+    setLoadingSampleId(sample.id);
+    try {
+      const response = await fetch(sample.githubRawUrl);
+      if (!response.ok) {
+        throw new Error(`Sample download failed (${response.status})`);
+      }
+      const blob = await response.blob();
+      const file = new File([blob], sample.fileName, { type: 'video/mp4' });
+
+      // Same validation/preview path used by drag-and-drop uploads
+      handleValidateAndSetFile(file, sample.title);
+      toast.info(`Loaded demo video: ${sample.title}`);
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to load the sample clip from GitHub.');
+    } finally {
+      setLoadingSampleId(null);
+    }
   };
 
   const proceedToTargetSelection = async () => {
@@ -256,7 +276,11 @@ export const Upload: React.FC = () => {
               <div
                 key={sample.id}
                 onClick={() => handleUseSample(sample)}
-                className="vantage-glass rounded-xl p-3 text-left cursor-pointer group hover:border-white/40 transition-all"
+                className={`vantage-glass rounded-xl p-3 text-left transition-all ${
+                  loadingSampleId === sample.id
+                    ? 'opacity-70 cursor-wait'
+                    : 'cursor-pointer group hover:border-white/40'
+                }`}
               >
                 <div className="relative aspect-video rounded-lg overflow-hidden mb-3 bg-neutral-900">
                   <img
@@ -265,7 +289,7 @@ export const Upload: React.FC = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <span className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/70 text-[10px] font-mono text-white">
-                    {sample.duration}
+                    {loadingSampleId === sample.id ? 'Loading…' : sample.duration}
                   </span>
                   <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-black/60 text-[10px] font-mono text-emerald-400">
                     {sample.peopleCount} people detected
@@ -274,7 +298,9 @@ export const Upload: React.FC = () => {
                 <h4 className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">
                   {sample.title}
                 </h4>
-                <p className="text-xs text-white/50 font-mono mt-0.5">{sample.size}</p>
+                <p className="text-xs text-white/50 font-mono mt-0.5">
+                  {loadingSampleId === sample.id ? 'Downloading from GitHub…' : sample.size}
+                </p>
               </div>
             ))}
           </div>
