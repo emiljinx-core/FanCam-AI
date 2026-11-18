@@ -12,7 +12,6 @@ frontend/dist/
 
 # Runtime data and generated media
 backend/storage/
-backend/weights/
 
 # Editor / OS
 .vscode/

@@ -2,8 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-
-from app.api.routes import router as api_router
+from app.api.routes import router as api_router, health_check
 from app.config import settings
 
 
@@ -59,3 +58,7 @@ async def root():
         "docs": "/docs",
         "health": f"{settings.API_V1_PREFIX}/health",
     }
+
+@app.get("/health", include_in_schema=False)
+async def root_health_check():
+    return await health_check()

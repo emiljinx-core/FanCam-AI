@@ -6,7 +6,7 @@ import { BackgroundVideo } from '../components/BackgroundVideo';
 import { DemoModal } from '../components/DemoModal';
 import { YouTubeDemoModal } from '../components/YouTubeDemoModal';
 
-const DEMO_YOUTUBE_URL = 'https://youtu.be/UB3KRTeprBU';
+const DEMO_YOUTUBE_URL = 'https://www.youtube.com/watch?v=UB3KRTeprBU';
 
 const demoVideoUrl =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260808_064556_051587f1-74a1-4336-8c05-4dde3594ed05.mp4';
