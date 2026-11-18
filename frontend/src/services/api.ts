@@ -189,3 +189,31 @@ export function getDownloadUrl(videoId: string): string {
   return `${API_BASE_URL}/api/download/${videoId}`;
 }
 
+export interface ContactFormPayload {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  website?: string; // Honeypot
+}
+
+export interface ContactResponse {
+  message: string;
+  email_id?: string | null;
+}
+
+export async function submitContactForm(payload: ContactFormPayload): Promise<ContactResponse> {
+  const res = await fetch(`${API_BASE_URL}/api/contact`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({ detail: 'Failed to send message' }));
+    throw new Error(errorData.detail || `Failed to send message with status ${res.status}`);
+  }
+
+  return res.json();
+}
+

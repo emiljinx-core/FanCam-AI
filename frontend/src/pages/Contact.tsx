@@ -3,26 +3,43 @@ import { toast } from 'react-toastify';
 import { Header } from '../components/Header';
 import { BackgroundVideo } from '../components/BackgroundVideo';
 import { Footer } from '../components/Footer';
-import { Mail, MessageSquare, Send, CheckCircle2, AlertTriangle, Bug } from 'lucide-react';
+import { Mail, MessageSquare, Send, CheckCircle2, AlertTriangle, Bug, Loader2 } from 'lucide-react';
+import { submitContactForm } from '../services/api';
 
 export const Contact: React.FC = () => {
   const [form, setForm] = useState({
     name: '',
     email: '',
-    category: 'tracking-bug',
-    message: ''
+    subject: 'Tracking Lost Subject / Occlusion Issue',
+    message: '',
+    website: '' // Honeypot
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.email || !form.message) {
+    if (!form.email.trim() || !form.message.trim()) {
       toast.warning('Please provide your email address and message.');
       return;
     }
 
-    setSubmitted(true);
-    toast.success('Your feedback has been received. Our team will review the tracking pipeline.');
+    setSubmitting(true);
+    try {
+      await submitContactForm({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        subject: form.subject,
+        message: form.message.trim(),
+        website: form.website
+      });
+      setSubmitted(true);
+      toast.success('Your message has been sent.');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to send your message. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -58,7 +75,13 @@ export const Contact: React.FC = () => {
             <button
               onClick={() => {
                 setSubmitted(false);
-                setForm({ name: '', email: '', category: 'tracking-bug', message: '' });
+                setForm({
+                  name: '',
+                  email: '',
+                  subject: 'Tracking Lost Subject / Occlusion Issue',
+                  message: '',
+                  website: ''
+                });
               }}
               className="px-5 py-2.5 rounded-lg bg-white text-black text-xs font-semibold hover:bg-neutral-200"
             >
@@ -67,6 +90,19 @@ export const Contact: React.FC = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="vantage-glass rounded-2xl p-6 sm:p-8 space-y-5">
+            {/* Honeypot: hidden from real users, used to discard bot submissions */}
+            <div style={{ position: 'absolute', left: '-9999px' }} aria-hidden="true">
+              <label htmlFor="contact-website">Website</label>
+              <input
+                id="contact-website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={form.website}
+                onChange={(e) => setForm({ ...form, website: e.target.value })}
+              />
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5 text-left">
                 <label className="text-xs font-mono text-white/80 uppercase">Name (Optional)</label>
@@ -93,16 +129,16 @@ export const Contact: React.FC = () => {
             </div>
 
             <div className="space-y-1.5 text-left">
-              <label className="text-xs font-mono text-white/80 uppercase">Inquiry Category</label>
+              <label className="text-xs font-mono text-white/80 uppercase">Subject *</label>
               <select
-                value={form.category}
-                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                value={form.subject}
+                onChange={(e) => setForm({ ...form, subject: e.target.value })}
                 className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-900 border border-white/15 text-white text-sm focus:border-white focus:outline-none"
               >
-                <option value="tracking-bug">Tracking Lost Subject / Occlusion Issue</option>
-                <option value="file-size">Video Upload / 100 MB Limit Question</option>
-                <option value="feature-request">Feature Request (e.g. Multi-Track Highlight)</option>
-                <option value="general">General Support</option>
+                <option value="Tracking Lost Subject / Occlusion Issue">Tracking Lost Subject / Occlusion Issue</option>
+                <option value="Video Upload / 100 MB Limit Question">Video Upload / 100 MB Limit Question</option>
+                <option value="Feature Request (e.g. Multi-Track Highlight)">Feature Request (e.g. Multi-Track Highlight)</option>
+                <option value="General Support">General Support</option>
               </select>
             </div>
 
@@ -120,10 +156,20 @@ export const Contact: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-3 rounded-lg bg-white text-black font-semibold text-sm hover:bg-neutral-200 transition-all flex items-center justify-center gap-2"
+              disabled={submitting}
+              className="w-full py-3 rounded-lg bg-white text-black font-semibold text-sm hover:bg-neutral-200 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              <Send className="w-4 h-4" />
-              <span>Submit Report</span>
+              {submitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Sending...</span>
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  <span>Submit Report</span>
+                </>
+              )}
             </button>
           </form>
         )}

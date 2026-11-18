@@ -14,6 +14,7 @@ from app.core.detector import PersonDetector
 from app.core.reid import OSNetReIDExtractor
 from app.core.tasks import TaskManager
 from app.core.pipeline import PipelineOrchestrator
+from app.core.mailer import EmailDeliveryError, send_contact_email
 from app.models.schemas import (
     HealthResponse,
     UploadResponse,
@@ -29,6 +30,8 @@ from app.models.schemas import (
     ProcessVideoRequest,
     ProcessVideoResponse,
     TaskStatusResponse,
+    ContactRequest,
+    ContactResponse,
 )
 
 router = APIRouter()
@@ -492,4 +495,30 @@ async def download_video(video_id: str):
         path=str(target_file),
         media_type="video/mp4",
         filename=f"fancam_{video_id}.mp4",
+    )
+
+
+@router.post("/contact", response_model=ContactResponse, tags=["Contact"])
+def submit_contact(payload: ContactRequest) -> ContactResponse:
+    """Validate a contact submission and deliver it to the configured inbox."""
+    if payload.website.strip():
+        # Honeypot filled by a bot: acknowledge without sending anything.
+        return ContactResponse(message="Thanks for reaching out.")
+
+    try:
+        email_id = send_contact_email(
+            name=payload.name,
+            email=payload.email,
+            subject=payload.subject,
+            message=payload.message,
+        )
+    except EmailDeliveryError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=str(exc),
+        ) from exc
+
+    return ContactResponse(
+        message="Your message has been sent successfully.",
+        email_id=email_id,
     )

@@ -48,17 +48,17 @@ export const Home: React.FC = () => {
           <div className="lg:col-span-8 flex flex-col items-start space-y-6 sm:space-y-8">
             <h1 className="hero-title font-display font-[500] text-4xl sm:text-6xl md:text-7xl lg:text-[82px] leading-[0.98] tracking-[-2.1px] text-left select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               <span className="line line-one block text-white origin-left transform sm:scale-x-[0.92]">
-                <span className="line-reveal">Isolate Any</span>
+                <span className="line-reveal">My FanCam</span>
               </span>
               <span className="line line-two block text-[#d3cfcf]/90 origin-left transform sm:scale-x-[0.94] mt-1 sm:mt-2">
-                <span className="line-reveal">Person Automatically.</span>
+                <span className="line-reveal">Favorites in Focus</span>
               </span>
             </h1>
 
             <p className="hero-copy text-[#e2e5e4]/90 text-sm sm:text-base md:text-lg font-[350] tracking-[0.13px] leading-relaxed max-w-xl text-left drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
-              Editing group footage to track a single person takes hours of manual keyframing.<br className="hidden sm:inline" />
-              FanCam bring them into one clear signal, so every<br className="hidden sm:inline" />
-              highlight reel is generated with AI you actually trust.
+              Choose people for personalized edits.<br className="hidden sm:inline" />
+              AI automatically tracks selected subjects across frames.<br className="hidden sm:inline" />
+              Inspired by fan cam trends, bringing favorite people into focus.
             </p>
 
             <div className="home-cta-wrap pt-2">

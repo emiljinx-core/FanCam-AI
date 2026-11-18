@@ -49,6 +49,11 @@ class Settings(BaseSettings):
     # FFmpeg executable path
     FFMPEG_PATH: str = _default_ffmpeg_path()
 
+    # Contact form email delivery (Resend)
+    RESEND_API_KEY: str = ""
+    CONTACT_EMAIL_TO: str = ""
+    CONTACT_EMAIL_FROM: str = "onboarding@resend.dev"
+
     # CORS origins
     ALLOWED_ORIGINS: list[str] = [
         "http://localhost:5173",

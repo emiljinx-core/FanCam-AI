@@ -1,3 +1,5 @@
+import re
+
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List, Literal
 
@@ -126,3 +128,40 @@ class TaskStatusResponse(BaseModel):
     created_at: float
     updated_at: float
     completed_at: Optional[float] = None
+
+
+class ContactRequest(BaseModel):
+    name: str = Field(default="", max_length=100)
+    email: str = Field(..., max_length=254)
+    subject: str = Field(..., min_length=1, max_length=120)
+    message: str = Field(..., min_length=1, max_length=5000)
+    website: str = ""  # Honeypot: left empty by real users
+
+    @field_validator("email")
+    @classmethod
+    def validate_email_format(cls, v: str) -> str:
+        value = v.strip()
+        if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", value):
+            raise ValueError("Enter a valid email address.")
+        return value
+
+    @field_validator("name", "subject")
+    @classmethod
+    def strip_short_text(cls, v: str, info) -> str:
+        value = v.strip()
+        if info.field_name == "subject" and not value:
+            raise ValueError("Subject cannot be empty.")
+        return value
+
+    @field_validator("message")
+    @classmethod
+    def validate_message(cls, v: str) -> str:
+        value = v.strip()
+        if not value:
+            raise ValueError("Message cannot be empty.")
+        return value
+
+
+class ContactResponse(BaseModel):
+    message: str
+    email_id: Optional[str] = None

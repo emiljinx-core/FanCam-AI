@@ -2,31 +2,31 @@ import React, { useState } from 'react';
 import { Header } from '../components/Header';
 import { BackgroundVideo } from '../components/BackgroundVideo';
 import { Footer } from '../components/Footer';
-import { Cpu, Target, Camera, Layers, CheckCircle, ChevronDown, ShieldCheck, Zap } from 'lucide-react';
+import { Cpu, ShieldCheck, Camera, Layers, ChevronDown, Zap } from 'lucide-react';
 
 export const About: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const faqs = [
     {
-      q: 'What is the maximum supported video file size?',
-      a: 'FanCam strictly enforces a maximum file size of 100 MB per video. This allows rapid client-side frame scrubbing and real-time backend inference without requiring user accounts or subscriptions.'
+      q: 'How does FanCam stay locked onto the right person in a crowd?',
+      a: 'Your selected subject gets an immutable OSNet appearance signature. Detected people are compared against it by cosine similarity, with a drift guard and ByteTrack/DeepSORT identity continuity, so crossings, occlusions, and late entry do not cause a target switch.'
     },
     {
-      q: 'Do I need to create an account or sign in to process videos?',
-      a: 'No. FanCam is entirely frictionless. You can upload group footage, isolate your target subject, adjust smoothing, and download the finished 9:16 reel immediately without registration.'
+      q: 'Which tracker should I choose — ByteTrack or DeepSORT?',
+      a: 'ByteTrack is the faster option for crowded scenes and motion blur, associating both high- and low-confidence detections. DeepSORT is better when people overlap heavily: it combines appearance cascade matching with Kalman motion gating to keep IDs stable through occlusion.'
     },
     {
-      q: 'How does FanCam handle occlusions when people cross paths?',
-      a: 'FanCam leverages persistent multi-object tracking (ByteTrack combined with visual Re-ID embeddings). Even if another person temporarily walks in front of your subject, the tracker preserves identity continuity without jumping targets.'
+      q: 'Why is the camera motion smooth instead of jittery?',
+      a: 'A 2D Kalman filter predicts where the subject is heading next, so the crop window moves ahead of them rather than reacting late. Dynamic zoom and strict boundary clamping keep the subject framed without stretching the video or clipping the edges.'
     },
     {
-      q: 'Can I choose different output aspect ratios?',
-      a: 'Yes. You can switch between 9:16 (vertical for TikTok, IG Reels, YouTube Shorts), 1:1 (square for Instagram feeds), and 16:9 (horizontal widescreen).'
+      q: "Will my video's audio stay in sync?",
+      a: 'Yes. FFmpeg muxes the original audio track with stream copy when possible, falling back to high-bitrate AAC when needed. Source FPS, frame count, and duration are preserved, so lipsync stays intact.'
     },
     {
-      q: 'What video containers are supported?',
-      a: 'We support all standard .mp4 and .mov files encoded with standard H.264, H.265, or ProRes video streams and AAC audio.'
+      q: 'How do I know when processing is finished?',
+      a: 'Processing runs as a background task. The app submits POST /api/process and polls GET /api/status, moving from queued to processing to completed, with the download link appearing automatically.'
     }
   ];
 
@@ -60,17 +60,17 @@ export const About: React.FC = () => {
             </div>
             <h3 className="font-display text-xl font-medium text-white">Smart Person Detection</h3>
             <p className="text-sm text-white/70 leading-relaxed">
-              Scans video frames using high-accuracy YOLO models to identify, segment, and tag all visible individuals with confidence ratings.
+              YOLOv8 scans Frame 0 and any scrubbed frame, tagging every detected person with normalized bounding boxes and confidence scores for one-click target selection.
             </p>
           </div>
 
           <div className="vantage-glass rounded-2xl p-6 sm:p-8 space-y-3">
             <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white">
-              <Target className="w-5 h-5 text-emerald-400" />
+              <ShieldCheck className="w-5 h-5 text-emerald-400" />
             </div>
-            <h3 className="font-display text-xl font-medium text-white">Persistent Multi-Object Tracking</h3>
+            <h3 className="font-display text-xl font-medium text-white">OSNet Identity Lock</h3>
             <p className="text-sm text-white/70 leading-relaxed">
-              Maintains unbroken identity continuity for the selected person throughout the sequence, even during occlusions, turns, or background crossings.
+              An immutable 512-dimensional appearance signature locks onto your subject. Cosine-similarity matching re-identifies them after occlusions or late entry, preventing identity swaps.
             </p>
           </div>
 
@@ -78,9 +78,9 @@ export const About: React.FC = () => {
             <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white">
               <Camera className="w-5 h-5 text-emerald-400" />
             </div>
-            <h3 className="font-display text-xl font-medium text-white">Cinematic Automated Framing</h3>
+            <h3 className="font-display text-xl font-medium text-white">Predictive Cinematic Framing</h3>
             <p className="text-sm text-white/70 leading-relaxed">
-              Applies continuous cubic smoothing filters to the dynamic crop window, replicating the fluid motion of a professional camera operator without mechanical jitter.
+              A 2D Kalman filter predicts position and velocity so the camera leads the subject instead of chasing it. Dynamic zoom and strict boundary clamping keep every pan smooth.
             </p>
           </div>
 
@@ -88,9 +88,9 @@ export const About: React.FC = () => {
             <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white">
               <Layers className="w-5 h-5 text-emerald-400" />
             </div>
-            <h3 className="font-display text-xl font-medium text-white">Flexible Aspect Ratios</h3>
+            <h3 className="font-display text-xl font-medium text-white">Dual Tracking Engines</h3>
             <p className="text-sm text-white/70 leading-relaxed">
-              Instantly formats the final output to match TikTok (9:16), Instagram (1:1), or YouTube Shorts without letterboxing or audio degradation.
+              ByteTrack rapidly associates high- and low-confidence detections to hold tracks through motion blur in crowded scenes. DeepSORT adds appearance cascade matching and Kalman motion gating for heavy occlusion.
             </p>
           </div>
         </div>

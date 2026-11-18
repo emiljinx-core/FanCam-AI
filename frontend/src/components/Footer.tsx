@@ -27,10 +27,10 @@ export const Footer: React.FC = () => {
               <Cpu className="w-3.5 h-3.5 text-white/80" /> YOLO-v8x Person Detection
             </li>
             <li className="flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-white/80" /> ByteTrack Persistent Re-ID
+              <Sparkles className="w-3.5 h-3.5 text-white/80" /> ByteTrack / DeepSORT Persistent Re-ID
             </li>
             <li className="flex items-center gap-1.5">
-              <Shield className="w-3.5 h-3.5 text-white/80" /> Client-side strict 100 MB quota
+              <Shield className="w-3.5 h-3.5 text-white/80" /> Kalman Filter Framing & FFmpeg
             </li>
           </ul>
         </div>
@@ -52,13 +52,9 @@ export const Footer: React.FC = () => {
           <div className="flex flex-wrap gap-1.5 text-[11px] font-mono text-white/70">
             <span className="px-2 py-0.5 rounded border border-white/10 bg-white/5">MP4</span>
             <span className="px-2 py-0.5 rounded border border-white/10 bg-white/5">MOV</span>
-            <span className="px-2 py-0.5 rounded border border-white/10 bg-white/5">9:16 Shorts</span>
-            <span className="px-2 py-0.5 rounded border border-white/10 bg-white/5">1:1 Square</span>
-            <span className="px-2 py-0.5 rounded border border-white/10 bg-white/5">16:9 Landscape</span>
+
           </div>
-          <p className="text-[11px] text-white/40 pt-1">
-            Zero sign-up required. Immediate processing in your browser.
-          </p>
+
         </div>
       </div>
 
@@ -67,7 +63,7 @@ export const Footer: React.FC = () => {
         <div className="flex items-center gap-6">
           <span className="hover:text-white/80 cursor-pointer">Privacy Policy</span>
           <span className="hover:text-white/80 cursor-pointer">Terms of Service</span>
-          <span className="text-emerald-400/90 font-mono">Status: All Systems Operational</span>
+
         </div>
       </div>
     </footer>
