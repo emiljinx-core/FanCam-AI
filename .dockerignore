@@ -1,0 +1,12 @@
+.git
+.gitignore
+.github
+edlvenv
+venv
+node_modules
+frontend
+backend/storage
+backend/.env
+backend/.pytest_cache
+**/__pycache__
+*.pyc
