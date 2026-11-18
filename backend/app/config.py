@@ -61,6 +61,13 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5173",
         "http://127.0.0.1:3000",
     ]
+    # Comma-separated production origins, e.g. https://my-app.vercel.app
+    CORS_EXTRA_ORIGINS: str = ""
+
+    @property
+    def cors_origins(self) -> list[str]:
+        extra = [origin.strip() for origin in self.CORS_EXTRA_ORIGINS.split(",") if origin.strip()]
+        return self.ALLOWED_ORIGINS + extra
 
     def init_directories(self) -> None:
         """Create storage directories if they do not already exist."""
