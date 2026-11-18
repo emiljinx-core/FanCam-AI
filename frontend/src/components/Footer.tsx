@@ -61,8 +61,8 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-white/50 gap-4">
         <p>© 2026 FanCam Engine. All rights reserved.</p>
         <div className="flex items-center gap-6">
-          <span className="hover:text-white/80 cursor-pointer">Privacy Policy</span>
-          <span className="hover:text-white/80 cursor-pointer">Terms of Service</span>
+          <Link to="/privacy" className="hover:text-white/80 transition-colors">Privacy Policy</Link>
+          <Link to="/terms" className="hover:text-white/80 transition-colors">Terms of Service</Link>
 
         </div>
       </div>

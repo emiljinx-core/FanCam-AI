@@ -172,7 +172,8 @@ export const Upload: React.FC = () => {
             Upload Group Footage
           </h1>
           <p className="text-sm sm:text-base text-white/70 mt-1.5 max-w-2xl">
-            Drop your party, sports, or event clips below. FanCam will extract all subjects from Frame 0 for target selection.
+            Drop your party, sports or event clips below.<br className="hidden sm:inline" /> 
+            
           </p>
         </div>
 

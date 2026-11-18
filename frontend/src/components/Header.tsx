@@ -18,11 +18,12 @@ export const Header: React.FC = () => {
           aria-label="FanCam Home"
         >
           <div className="w-[28px] h-[28px] rounded-full bg-[#ededed] relative overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.5)] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" aria-hidden="true">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#050606" />
-              <path d="M2 17L12 22L22 17" stroke="#737778" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M2 12L12 17L22 12" stroke="#0a0b0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <img
+              src="https://raw.githubusercontent.com/emiljinx-core/FanCam-AI/main/assets/FanCam.jpeg"
+              alt=""
+              aria-hidden="true"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="flex flex-col">
             <span className="font-display font-semibold text-lg tracking-tight text-white flex items-center gap-1.5">
@@ -65,13 +66,7 @@ export const Header: React.FC = () => {
         </nav>
 
         <div className="hidden sm:flex items-center gap-5">
-          <div className="flex items-center gap-2 pl-3 py-1.5 border-l-2 border-white/25">
-            <HardDrive className="w-4 h-4 text-white/60" aria-hidden="true" />
-            <div className="flex flex-col text-left leading-tight">
-              <span className="text-[11px] font-[420] text-white/60 uppercase tracking-wider">Constraint</span>
-              <span className="text-[13px] font-[460] text-white/95">Max File Size: 100 MB</span>
-            </div>
-          </div>
+
 
           <button
             onClick={() => navigate('/upload')}

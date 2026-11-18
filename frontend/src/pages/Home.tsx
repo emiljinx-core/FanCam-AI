@@ -4,6 +4,11 @@ import { ArrowRight, Play } from 'lucide-react';
 import { Header } from '../components/Header';
 import { BackgroundVideo } from '../components/BackgroundVideo';
 import { DemoModal } from '../components/DemoModal';
+import { YouTubeDemoModal } from '../components/YouTubeDemoModal';
+
+// Paste the real full/long YouTube link here when you have it.
+// Only https://www.youtube.com/watch?v=VIDEO_ID is accepted (dummy link for now).
+const DEMO_YOUTUBE_URL = 'https://www.youtube.com/watch?v=M7lc1UVf-VE';
 
 const demoVideoUrl =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260808_064556_051587f1-74a1-4336-8c05-4dde3594ed05.mp4';
@@ -11,6 +16,7 @@ const demoVideoUrl =
 export const Home: React.FC = () => {
   const navigate = useNavigate();
   const [demoOpen, setDemoOpen] = useState(false);
+  const [youtubeDemoOpen, setYoutubeDemoOpen] = useState(false);
   const motionTimer = useRef<number | null>(null);
 
   const finishMotion = (event?: React.AnimationEvent<HTMLElement>) => {
@@ -111,7 +117,7 @@ export const Home: React.FC = () => {
               </div>
 
               <button
-                onClick={() => setDemoOpen(true)}
+                onClick={() => setYoutubeDemoOpen(true)}
                 className="w-full py-2.5 rounded-[9px] vantage-glass-button text-white text-[13px] sm:text-[14px] font-[440] hover:brightness-110 transition-all flex items-center justify-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4"
               >
                 <Play className="w-3.5 h-3.5 fill-white text-white" aria-hidden="true" />
@@ -123,6 +129,11 @@ export const Home: React.FC = () => {
       </main>
 
       <DemoModal isOpen={demoOpen} onClose={() => setDemoOpen(false)} />
+      <YouTubeDemoModal
+        isOpen={youtubeDemoOpen}
+        onClose={() => setYoutubeDemoOpen(false)}
+        videoUrl={DEMO_YOUTUBE_URL}
+      />
     </div>
   );
 };

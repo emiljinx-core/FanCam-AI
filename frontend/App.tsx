@@ -11,6 +11,8 @@ const SelectTarget = React.lazy(() => import('./src/pages/SelectTarget'));
 const Result = React.lazy(() => import('./src/pages/Result'));
 const About = React.lazy(() => import('./src/pages/About'));
 const Contact = React.lazy(() => import('./src/pages/Contact'));
+const PrivacyPolicy = React.lazy(() => import('./src/pages/PrivacyPolicy'));
+const TermsOfService = React.lazy(() => import('./src/pages/TermsOfService'));
 const NotFound = React.lazy(() => import('./src/pages/NotFound'));
 
 const App: React.FC = () => {
@@ -32,6 +34,8 @@ const App: React.FC = () => {
               <Route path="/result" element={<Result />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

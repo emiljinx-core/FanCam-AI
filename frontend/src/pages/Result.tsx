@@ -128,8 +128,8 @@ export const Result: React.FC = () => {
             {isLoading
               ? `/ ${taskData?.current_step || 'RENDERING HIGHLIGHT'} (${taskData?.progress ?? 0}%)`
               : error
-              ? `/ ERROR OCCURRED`
-              : '/ EXPORT & DOWNLOAD READY'}
+                ? `/ ERROR OCCURRED`
+                : '/ EXPORT & DOWNLOAD READY'}
           </span>
         </div>
 
@@ -155,11 +155,10 @@ export const Result: React.FC = () => {
             <button
               onClick={handleDownload}
               disabled={isLoading || !!error}
-              className={`px-5 py-2.5 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-lg transition-transform ${
-                isLoading || !!error
+              className={`px-5 py-2.5 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-lg transition-transform ${isLoading || !!error
                   ? 'bg-white/20 text-white/40 cursor-not-allowed'
                   : 'bg-white text-black hover:bg-neutral-200 hover:scale-105 active:scale-95'
-              }`}
+                }`}
             >
               <Download className="w-4 h-4" />
               <span>Download Video</span>
@@ -173,17 +172,15 @@ export const Result: React.FC = () => {
           <div className="inline-flex rounded-lg p-1 bg-white/5 border border-white/10 mb-6">
             <button
               onClick={() => setActiveTab('reframed')}
-              className={`px-4 py-1.5 rounded-md text-xs font-medium transition-all ${
-                activeTab === 'reframed' ? 'bg-white text-black' : 'text-white/70 hover:text-white'
-              }`}
+              className={`px-4 py-1.5 rounded-md text-xs font-medium transition-all ${activeTab === 'reframed' ? 'bg-white text-black' : 'text-white/70 hover:text-white'
+                }`}
             >
               {ratio} Reframed Highlight
             </button>
             <button
               onClick={() => setActiveTab('comparison')}
-              className={`px-4 py-1.5 rounded-md text-xs font-medium transition-all ${
-                activeTab === 'comparison' ? 'bg-white text-black' : 'text-white/70 hover:text-white'
-              }`}
+              className={`px-4 py-1.5 rounded-md text-xs font-medium transition-all ${activeTab === 'comparison' ? 'bg-white text-black' : 'text-white/70 hover:text-white'
+                }`}
             >
               Source vs Tracked Crop
             </button>
@@ -263,26 +260,7 @@ export const Result: React.FC = () => {
           </div>
         </div>
 
-        {/* Social Platforms Export Checklist */}
-        <div className="vantage-glass rounded-xl p-6 text-left">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-white font-mono mb-3">
-            Ready to Publish
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-white/80">
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-white/5 border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>TikTok (9:16 Fullscreen)</span>
-            </div>
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-white/5 border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>Instagram Reels & Stories</span>
-            </div>
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-white/5 border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>YouTube Shorts (Safe Zone)</span>
-            </div>
-          </div>
-        </div>
+        
       </main>
 
       <Footer />
