@@ -1,3 +1,8 @@
+---
+sdk: docker
+app_port: 7860
+---
+
 # 🎥 FanCam AI: Autonomous Subject Detection, Tracking & Adaptive Cinematic Reframing
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
